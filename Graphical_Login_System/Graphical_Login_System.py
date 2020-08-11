@@ -8,12 +8,13 @@ root.title('Graphical Login System')
 photo = ImageTk.PhotoImage(file='user-login-enter-icon-person.jpg')
 root.iconphoto(False, photo)
 
-
+# programs register button
 def register():
     global register_window
     global user_entry
     global password_entry
-
+    
+    # shows widgets on the register window
     register_window = Toplevel()
     r_top_label = Label(register_window, text='Enter details below', background='blue')
     user_label = Label(register_window, text='Username')
@@ -34,6 +35,8 @@ def register():
     save_button.grid(row=5, column=0, pady=5)
 
 
+ # confirm that your username and password meets all criteria
+# Then adds it to the txt file
 def save():
     global user_entry
     global password_entry
@@ -46,13 +49,15 @@ def save():
     for line in file_read:
         in_user = line.split()[0]
 
+        #checks if username is already taken
         if f"('{user_entry.get()}'," in in_user:
             messagebox.showerror('Error', 'That username is already taken')
             break
-
+    #checks username and password length
     if len(user_entry.get()) < 8 or len(password_entry.get()) < 8:
         messagebox.showerror('Error', 'Both your user name and password must be at least 8 characters long')
-
+    
+    #adds registration to txt file
     if f"('{user_entry.get()}'," not in in_user:
         if not len(user_entry.get()) < 8 or not len(password_entry.get()) < 8:
             file_append.write(f'\n{(user_entry.get(), password_entry.get())}')
@@ -62,12 +67,13 @@ def save():
             file_append.close()
             file_read.close()
 
-
+# programs login button
 def login():
     global login_user_entry
     global login_password_entry
     global login_window
-
+    
+    # makes login window
     login_window = Tk()
     login_top_label = Label(login_window, text='Enter Login Details')
     login_user_label = Label(login_window, text='Username')
@@ -87,10 +93,9 @@ def login():
     login_password_entry.grid(row=4, column=0, pady=4)
     logging_in_button.grid(row=5, column=0, pady=10)
 
-
+# confirms login
 def logging_in():
     file_read = open('login.txt', 'r')
-
     if f"('{login_user_entry.get()}', '{login_password_entry.get()}')" in file_read.read():
         confirm_window = Toplevel()
         confirm_window_label = Label(confirm_window, text='Login Success')
@@ -104,7 +109,7 @@ def logging_in():
     else:
         messagebox.showerror('Error', 'Your username and/or password is wrong!')
 
-
+# shows the widgets in the main window when you 1st open the program. 
 top_label = Label(root, text='Pick An Option', background='blue')
 login_button = Button(root, text='Login', padx=50, pady=20, command=login)
 register_button = Button(root, text='Register', padx=50, pady=20, command=register)
